@@ -17,8 +17,10 @@ docker run --name tetris -v /home/YOURUSERNAME/tetris/:/usr/share/nginx/html:ro 
 
 ### Standalone Local
 ```sh
-git clone https://github.com/bsord/tetris
-sudo cp tetris/* /usr/share/nginx/html
+mkdir ~/tetris
+cd ~/tetris
+git clone https://github.com/bsord/tetris .
+sudo cp * /usr/share/nginx/html
 ```
 Once downloaded and place in a web server directory, open it in your browser
 
