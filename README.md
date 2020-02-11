@@ -1,5 +1,5 @@
 # Tetris
-Tetris game built on HTML5 Canvas and Javascript. Built mostly as learning exercise for array matrixes and how to manipulate them.
+Tetris game built on HTML5 Canvas and Javascript. Built mostly as a learning exercise for array matrixes and how to manipulate them.
 
 ## Getting Started
 Running the game is simple:
