@@ -1,0 +1,80 @@
+name: "Release"
+# SECRETS NEEDED:
+# DOCKER_USERNAME - Container Registry Username (github or dockerhub)
+# DOCKER_ACCESS_TOKEN - Container registry Personal access token with push priveledges
+# CM_API_KEY - ChartMuseum API Key with permission to push
+# CM_REPO_URL - ChartMusuem REPO URL in the format: 'https://h.cfcr.io/bsord/charts'
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  release:
+    name: "Release"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: "actions/checkout@v2"
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Get next version
+        id: get-next-version
+        uses: bsord/conventional-changelog-action@v3.7.0
+        with:
+          github-token: ${{ secrets.github_token }}
+          tag-prefix: ''
+          skip-version-file: true
+          dry-run: true
+
+      - name: Update version in version files
+        if: ${{ steps.get-next-version.outputs.skipped == 'false' }}
+        run: |
+          sed -r -i 's/(\"version\":[^*]\")([[:alnum:].]*)/\1${{ steps.get-next-version.outputs.version }}/g' package.json
+          sed -r -i 's/(version:[^*]|appVersion:[^*])([[:alnum:].]*)/\1${{ steps.get-next-version.outputs.version }}/g' ./chart/Chart.yaml
+      - name: Commit changes
+        if: ${{ steps.get-next-version.outputs.skipped == 'false' }}
+        uses: EndBug/add-and-commit@v5
+        with:
+          message: "chore(version): Bump to: ${{ steps.get-next-version.outputs.version }}"
+          tag: "${{ steps.get-version.outputs.version }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate changelog and tag with new version
+        if: ${{ steps.get-next-version.outputs.skipped == 'false' }}
+        uses: bsord/conventional-changelog-action@v3.7.0
+        with:
+          github-token: ${{ secrets.github_token }}
+          tag-prefix: ''
+          skip-version-file: true
+      
+      - name: Create Release
+        if: ${{ steps.get-next-version.outputs.skipped == 'false' }}
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ steps.get-next-version.outputs.version }}
+          release_name: ${{ steps.get-next-version.outputs.version }}
+          body: ${{ steps.get-next-version.outputs.clean_changelog }}
+
+      - name: Build and publish Docker image
+        if: ${{ steps.get-next-version.outputs.skipped == 'false' }}
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: ${{ github.repository }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          tags: "latest,${{ steps.get-next-version.outputs.version }}"
+
+      - name: Push Helm chart
+        if: ${{ steps.get-next-version.outputs.skipped == 'false' }}
+        uses: bsord/helm-push@v3
+        with:
+          access-token: ${{ secrets.CM_API_KEY }}
+          repository-url: ${{ secrets.CM_REPO_URL }} 
+          force: true
+          chart-folder: chart

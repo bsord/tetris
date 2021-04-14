@@ -1,0 +1,5 @@
+{
+    "name": "tetris",
+    "version": "0.3.0",
+    "description": "Simple html5 canvas tetris game"
+  }
