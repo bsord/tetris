@@ -1,3 +1,12 @@
+## [0.5.2](https://github.com/bsord/tetris/compare/0.5.1...0.5.2) (2022-01-25)
+
+
+### Bug Fixes
+
+* missing topologySpreadConstraints ([86e9877](https://github.com/bsord/tetris/commit/86e9877be411e999293166d3c87733fa9dc2be7c))
+
+
+
 ## [0.5.1](https://github.com/bsord/tetris/compare/0.5.0...0.5.1) (2021-07-18)
 
 
