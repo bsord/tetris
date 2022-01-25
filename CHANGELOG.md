@@ -1,3 +1,12 @@
+## [0.5.4](https://github.com/bsord/tetris/compare/0.5.3...0.5.4) (2022-01-25)
+
+
+### Bug Fixes
+
+* release ([ab2ee85](https://github.com/bsord/tetris/commit/ab2ee852cfb08e20d353fff93fcceea8a49ccb9c))
+
+
+
 ## [0.5.3](https://github.com/bsord/tetris/compare/0.5.2...0.5.3) (2022-01-25)
 
 
@@ -31,10 +40,6 @@
 ### Features
 
 * **automation:** automate releases ([407e627](https://github.com/bsord/tetris/commit/407e62773b26bb710e36d2ec690d430c39145380))
-
-
-
-# 0.4.0 (2021-04-14)
 
 
 
