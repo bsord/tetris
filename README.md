@@ -23,5 +23,5 @@ cd ~/tetris
 git clone https://github.com/bsord/tetris .
 sudo cp * /usr/share/nginx/html
 ```
-Once downloaded and place in a web server directory, open it in your browser.
+Once downloaded and place in a web server directory, open it in your browser
 
