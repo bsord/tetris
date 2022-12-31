@@ -63,7 +63,7 @@ jobs:
 
       - name: Build and publish Docker image
         if: ${{ steps.get-next-version.outputs.skipped == 'false' }}
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           name: ${{ github.repository }}
           username: ${{ secrets.DOCKER_USERNAME }}
