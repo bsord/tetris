@@ -8,6 +8,8 @@ RUN chown -R nginx:nginx /usr/share/nginx/html/ && chmod -R 755 /usr/share/nginx
 RUN touch /var/run/nginx.pid && \
       chown -R nginx:nginx /var/run/nginx.pid
 
+RUN sed -i '/http {/a\    server_tokens off;' /etc/nginx/nginx.conf
+
 USER nginx
 EXPOSE 80
 
